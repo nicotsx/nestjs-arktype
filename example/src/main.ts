@@ -7,7 +7,7 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule, { abortOnError: false });
   app.enableCors();
 
-  const options = new DocumentBuilder().setTitle('nestjs-ark example').setVersion('1.0').build();
+  const options = new DocumentBuilder().setTitle('nestjs-arktype example').setVersion('1.0').build();
 
   const documentFactory = () => SwaggerModule.createDocument(app, options);
 

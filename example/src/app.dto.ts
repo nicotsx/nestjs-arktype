@@ -1,43 +1,23 @@
 import { type } from 'arktype';
-import { createArkDto } from 'nestjs-ark';
+import { createArkDto } from 'nestjs-arktype';
 
-const userSchema = type({
-  email: 'string.email = "hello@rico.com"',
-  id: 'number.integer = 0',
-  'versions?': '(number | string)[]',
-  sub: type({
-    name: 'string',
-    age: 'number',
-  }),
+const subSub = type({
+  force: 'number',
 });
 
 const sub = type({
   name: 'string',
   age: 'number',
+  properties: subSub.array(),
 });
 
 export const createUserBody = type({
   email: 'string.email',
-  id: 'number.integer = 0',
+  id: 'number.integer = 10',
   optional: 'string?',
-  'versions?': '(number | string)[]',
-  arrayOfObjectLiteral: [
-    {
-      name: 'string',
-    },
-    '[]',
-  ],
+  versions: 'number[]',
+  versions2: 'number[][]',
+  sub: sub,
 });
 
-const simple = type({
-  id: 'number',
-  array: type({
-    name: 'string',
-    age: 'number',
-  }).array(),
-});
-
-const arraySchema = simple.get('array');
-
-export class UserDto extends createArkDto(userSchema, { name: 'UserDto' }) {}
-export class CreateUserBodyDto extends createArkDto(createUserBody, { name: 'CreateUserBodyDto', input: false }) {}
+export class CreateUserBodyDto extends createArkDto(createUserBody, { name: 'CreateUserBodyDto', input: true }) {}
