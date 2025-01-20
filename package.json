@@ -26,9 +26,6 @@
   },
   "author": "",
   "license": "MIT",
-  "dependencies": {
-    "arktype": "^2.0.0"
-  },
   "devDependencies": {
     "@arethetypeswrong/cli": "^0.17.3",
     "@biomejs/biome": "^1.9.4",
@@ -40,6 +37,7 @@
   },
   "peerDependencies": {
     "@nestjs/common": ">=11",
-    "@nestjs/swagger": ">=11"
+    "@nestjs/swagger": ">=11",
+    "arktype": ">=2"
   }
 }
