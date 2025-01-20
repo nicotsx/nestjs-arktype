@@ -1,0 +1,42 @@
+{
+  "name": "nestjs-arktype",
+  "version": "1.0.0",
+  "description": "Define your NestJS DTOs and Swagger schemas using Arktype",
+  "keywords": ["typescript", "nestjs", "swagger", "openapi", "dto", "schema", "validation"],
+  "files": ["dist"],
+  "type": "module",
+  "main": "dist/index.js",
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "import": "./dist/index.js",
+      "default": "./dist/index.cjs"
+    }
+  },
+  "scripts": {
+    "build": "tsup",
+    "test": "vitest",
+    "ci": "npm run build && npm run lint:ci && npm run check-exports",
+    "lint:ci": "biome ci . --changed --error-on-warnings --no-errors-on-unmatched",
+    "lint": "biome lint",
+    "check-exports": "attw --pack .",
+    "tsc": "tsc"
+  },
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "arktype": "^2.0.0"
+  },
+  "devDependencies": {
+    "@arethetypeswrong/cli": "^0.17.3",
+    "@biomejs/biome": "^1.9.4",
+    "@types/node": "^22.10.7",
+    "tsup": "^8.3.5",
+    "typescript": "^5.7.3",
+    "vitest": "^3.0.2"
+  },
+  "peerDependencies": {
+    "@nestjs/common": ">=11",
+    "@nestjs/swagger": ">=11"
+  }
+}
