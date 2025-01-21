@@ -1,4 +1,4 @@
-# NestJS ❤ Arktype
+# NestJS ❤ ArkType
 
 `nestjs-arktype` is a simple library to help you define and validate all your NestJS DTOs using ArkType
 
@@ -12,6 +12,7 @@
 
 ```typescript
 // user.dto.ts
+import { type } from 'arktype';
 import { createArkDto } from 'nestjs-arktype';
 
 const userDto = type({

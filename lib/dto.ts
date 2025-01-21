@@ -42,11 +42,7 @@ export interface ArkDto<T extends Type<unknown> = Type<unknown>> {
 }
 
 const applyApiProperties = (jsonSchema: JsonSchema, target: ArkDto) => {
-  const { properties, required } = jsonSchema;
-
-  if (!properties) {
-    return;
-  }
+  const { properties = {}, required = [] } = jsonSchema;
 
   for (const [key, value] of Object.entries(properties)) {
     Object.defineProperty(target.prototype, key, {
@@ -57,11 +53,8 @@ const applyApiProperties = (jsonSchema: JsonSchema, target: ArkDto) => {
 
     const isRequired = required.includes(key);
 
-    if (isRequired) {
-      ApiProperty({ ...value })(target.prototype, key);
-    } else {
-      ApiPropertyOptional({ ...value })(target.prototype, key);
-    }
+    const Decorator = isRequired ? ApiProperty : ApiPropertyOptional;
+    Decorator({ type: 'string', ...value })(target.prototype, key);
   }
 };
 
@@ -106,6 +99,7 @@ export function createArkDto<T extends Type>(schema: T, opts: Options) {
   const jsonSchema = input ? schema.in.toJsonSchema() : schema.out.toJsonSchema();
 
   applyApiProperties(jsonSchema, AugmentedArkDto as unknown as ArkDto<T>);
+
   return AugmentedArkDto as unknown as ArkDto<T>;
 }
 
