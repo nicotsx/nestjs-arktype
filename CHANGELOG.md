@@ -1,5 +1,11 @@
 # nestjs-arktype
 
+## 1.0.3
+
+### Patch Changes
+
+- 26b0616: Add documentation
+
 ## 1.0.2
 
 ### Patch Changes
