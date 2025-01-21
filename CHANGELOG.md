@@ -1,5 +1,11 @@
 # nestjs-arktype
 
+## 1.1.0
+
+### Minor Changes
+
+- c21161b: Add support for polymorphic types
+
 ## 1.0.3
 
 ### Patch Changes
