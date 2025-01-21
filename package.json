@@ -24,7 +24,7 @@
     "tsc": "tsc",
     "local-release": "changeset version && changeset publish"
   },
-  "author": "",
+  "author": "https://github.com/nicotsx",
   "license": "MIT",
   "devDependencies": {
     "@arethetypeswrong/cli": "^0.17.3",
@@ -39,5 +39,9 @@
     "@nestjs/common": ">=11",
     "@nestjs/swagger": ">=11",
     "arktype": ">=2"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nicotsx/nestjs-arktype.git"
   }
 }
