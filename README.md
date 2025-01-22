@@ -41,6 +41,16 @@ async createUser(@Body() body: CreateUserBodyDto): Promise<UserDto> {
 }
 ```
 
+## Requirements
+
+- `arktype` >= `2`
+- `@nestjs/swagger` >= `11`
+- Node.js 22.x or later.
+
+NestJS doesn't support importing ESM only libraries. While we ship a CJS build,
+ArkType 2 is now ESM only. Fortunately Node.js 22 lets you require() esm modules
+out of the box so this is a hard requirement.
+
 ## Installation
 
 ```bash
@@ -63,8 +73,9 @@ export class MyDto extends createArkDto(schema, { name: 'MyDto', input: true })
 
 ## Validating your inputs
 
-The validation pipe uses your ArkType schemas to parse and validate incoming data from your parameter decorators.
-When the data is not valid it throws a `BadRequestException` with a short summary of what went wrong.
+The validation pipe uses your ArkType schemas to parse and validate incoming data
+from your parameter decorators. When the data is not valid it throws a
+`BadRequestException` with a short summary of what went wrong.
 
 To use it, in your main `app.module` add a new validation pipe.
 
@@ -84,7 +95,8 @@ import { ArkValidationPipe } from 'nestjs-arktype';
 export class AppModule {}
 ```
 
-Now whenever you use a parameter decorator in your controllers, it will be automatically parsed through the ArkType schema if the DTO is an ArkTypeDto.
+Now whenever you use a parameter decorator in your controllers, it will be
+automatically parsed through the ArkType schema if the DTO is an ArkTypeDto.
 
 ```typescript
 async createUser(@Body() body: CreateUserBodyDto) {
