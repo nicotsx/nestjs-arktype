@@ -31,6 +31,8 @@ export const createUserBody = type({
   hello: 'boolean | number',
   boolean: 'boolean',
   hello2: sub.or(subSub),
+  literal: '"hello" | "world"',
+  literal2: type.enumerated(1337, true, 'multi'),
 });
 
 export class CreateUserBodyDto extends createArkDto(createUserBody, { name: 'CreateUserBodyDto', input: true }) {}

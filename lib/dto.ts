@@ -13,22 +13,32 @@ type JsonField =
   | {
       type: PrimitiveSwaggerType;
       anyOf?: never;
+      const?: never;
+      enum?: string[];
     }
   | {
       type: 'array';
       items: JsonField;
       anyOf?: never;
+      const?: never;
     }
   | {
       type: 'object';
       properties: Record<string, JsonField>;
       required: string[];
       anyOf?: never;
+      const?: never;
     }
   | {
       type?: never;
       anyOf: JsonField[];
       required?: never;
+      const?: never;
+    }
+  | {
+      const: string;
+      type?: never;
+      anyOf?: never;
     };
 
 export interface ArkDto<T extends Type<unknown> = Type<unknown>> {
@@ -44,7 +54,7 @@ export interface ArkDto<T extends Type<unknown> = Type<unknown>> {
 const applyApiProperties = (jsonSchema: JsonSchema, target: ArkDto) => {
   const { properties = {}, required = [] } = jsonSchema;
 
-  for (const [key, value] of Object.entries(properties)) {
+  for (let [key, value] of Object.entries(properties)) {
     Object.defineProperty(target.prototype, key, {
       value: undefined,
       enumerable: true,
@@ -53,7 +63,12 @@ const applyApiProperties = (jsonSchema: JsonSchema, target: ArkDto) => {
 
     const isRequired = required.includes(key);
 
+    if (value.anyOf?.[0]?.const) {
+      value = { type: 'string', enum: value.anyOf.map((v) => v.const).filter((v) => v !== undefined) };
+    }
+
     const Decorator = isRequired ? ApiProperty : ApiPropertyOptional;
+
     Decorator({ type: 'string', ...value })(target.prototype, key);
   }
 };

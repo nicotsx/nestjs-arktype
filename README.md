@@ -47,9 +47,9 @@ async createUser(@Body() body: CreateUserBodyDto): Promise<UserDto> {
 - `@nestjs/swagger` >= `11`
 - Node.js 22.x or later.
 
-NestJS doesn't support importing ESM only libraries. While we ship a CJS build,
-ArkType 2 is now ESM only. Fortunately Node.js 22 lets you require() esm modules
-out of the box so this is a hard requirement.
+NestJS doesn't support importing ESM only libraries. ArkType 2 is now ESM only.
+Fortunately Node.js 22 lets you require() esm modules out of the box so this
+is a hard requirement.
 
 ## Installation
 

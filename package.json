@@ -6,13 +6,6 @@
   "files": ["dist"],
   "type": "module",
   "main": "dist/index.js",
-  "exports": {
-    "./package.json": "./package.json",
-    ".": {
-      "import": "./dist/index.js",
-      "default": "./dist/index.cjs"
-    }
-  },
   "scripts": {
     "prepublishOnly": "npm run ci",
     "build": "tsup",
