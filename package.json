@@ -1,6 +1,6 @@
 {
   "name": "nestjs-arktype",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "Define your NestJS DTOs and Swagger schemas using Arktype",
   "keywords": ["typescript", "nestjs", "swagger", "openapi", "dto", "schema", "validation"],
   "files": ["dist"],
@@ -13,7 +13,7 @@
     "ci": "npm run build && npm run lint:ci && npm run check-exports",
     "lint:ci": "biome ci . --changed --error-on-warnings --no-errors-on-unmatched",
     "lint": "biome lint",
-    "check-exports": "attw --pack .",
+    "check-exports": "attw --pack . --ignore-rules=cjs-resolves-to-esm",
     "tsc": "tsc",
     "local-release": "changeset version && changeset publish"
   },

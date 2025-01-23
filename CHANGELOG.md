@@ -1,5 +1,11 @@
 # nestjs-arktype
 
+## 1.2.0
+
+### Minor Changes
+
+- 41f3b64: Add support for string literals
+
 ## 1.1.0
 
 ### Minor Changes
