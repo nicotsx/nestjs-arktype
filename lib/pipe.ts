@@ -19,12 +19,14 @@ export function createArkValidationPipe(): ArkValidationPipeClass {
   class ArkValidationPipe implements PipeTransform {
     constructor(private dto?: ArkDto) {}
 
-    public transform(value: unknown, metadata: ArgumentMetadata) {
+    public transform(value: unknown, { metatype }: ArgumentMetadata) {
       if (this.dto) {
-        return validate(value, this.dto.schema);
-      }
+        if (this.dto.isInput) {
+          return validate(value, this.dto.input);
+        }
 
-      const { metatype } = metadata;
+        return validate(value, this.dto.output);
+      }
 
       if (!metatype) {
         return value;
@@ -34,7 +36,11 @@ export function createArkValidationPipe(): ArkValidationPipeClass {
         return value;
       }
 
-      return validate(value, metatype.schema);
+      if (metatype.isInput) {
+        return validate(value, metatype.input);
+      }
+
+      return validate(value, metatype.output);
     }
   }
 

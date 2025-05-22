@@ -44,6 +44,7 @@ type JsonField =
 export interface ArkDto<T extends Type<unknown> = Type<unknown>> {
   new (): T['inferOut'];
   isArkDto: true;
+  isInput: boolean;
   schema: T;
   parse(data: T['inferIn']): T['inferOut'];
   parseUnknown(data: unknown): T['inferOut'];
@@ -77,6 +78,7 @@ export function createArkDto<T extends Type>(schema: T, opts: Options) {
   const { name, input = false } = opts;
 
   class AugmentedArkDto {
+    public static isInput = input;
     public static schema = schema;
     public static input = schema.in;
     public static output = schema.out;
@@ -110,10 +112,9 @@ export function createArkDto<T extends Type>(schema: T, opts: Options) {
   }
 
   Object.defineProperty(AugmentedArkDto, 'name', { value: name });
-  // @ts-ignore
   const jsonSchema = input ? schema.in.toJsonSchema() : schema.out.toJsonSchema();
 
-  applyApiProperties(jsonSchema, AugmentedArkDto as unknown as ArkDto<T>);
+  applyApiProperties(jsonSchema as JsonSchema, AugmentedArkDto as unknown as ArkDto<T>);
 
   return AugmentedArkDto as unknown as ArkDto<T>;
 }

@@ -9,7 +9,7 @@
   "scripts": {
     "prepublishOnly": "npm run ci",
     "build": "tsup",
-    "test": "vitest",
+    "test": "vitest --watch=true",
     "ci": "npm run build && npm run lint:ci && npm run check-exports",
     "lint:ci": "biome ci . --changed --error-on-warnings --no-errors-on-unmatched",
     "lint": "biome lint",
@@ -23,9 +23,18 @@
     "@arethetypeswrong/cli": "^0.17.3",
     "@biomejs/biome": "^1.9.4",
     "@changesets/cli": "^2.27.11",
+    "@nestjs/core": "^11.1.0",
+    "@nestjs/platform-express": "^11.1.0",
+    "@nestjs/testing": "^11.1.0",
     "@types/node": "^22.10.7",
+    "@types/supertest": "^6.0.3",
+    "arktype": "^2.1.20",
+    "reflect-metadata": "^0.2.2",
+    "supertest": "^7.1.1",
     "tsup": "^8.3.5",
     "typescript": "^5.7.3",
+    "unplugin-swc": "^1.5.2",
+    "vite": "^6.3.5",
     "vitest": "^3.0.2"
   },
   "peerDependencies": {

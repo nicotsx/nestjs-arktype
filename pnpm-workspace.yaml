@@ -1,0 +1,8 @@
+ignoredBuiltDependencies:
+  - '@scarf/scarf'
+
+onlyBuiltDependencies:
+  - '@biomejs/biome'
+  - '@nestjs/core'
+  - '@swc/core'
+  - esbuild

@@ -1,0 +1,156 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`integration > should correctly create the openapi schema 1`] = `
+{
+  "components": {
+    "schemas": {
+      "CreateUserBodyDto": {
+        "properties": {
+          "age": {
+            "default": 18,
+            "type": "number",
+          },
+          "email": {
+            "format": "email",
+            "pattern": "^[\\w%+.-]+@[\\d.A-Za-z-]+\\.[A-Za-z]{2,}$",
+            "type": "string",
+          },
+          "password": {
+            "type": "string",
+          },
+        },
+        "required": [
+          "email",
+          "password",
+        ],
+        "type": "object",
+      },
+      "CreateUserBodyDtoOut": {
+        "properties": {
+          "age": {
+            "type": "number",
+          },
+          "email": {
+            "format": "email",
+            "pattern": "^[\\w%+.-]+@[\\d.A-Za-z-]+\\.[A-Za-z]{2,}$",
+            "type": "string",
+          },
+          "password": {
+            "type": "string",
+          },
+        },
+        "required": [
+          "age",
+          "email",
+          "password",
+        ],
+        "type": "object",
+      },
+    },
+  },
+  "info": {
+    "contact": {},
+    "description": "API specs for Runtipi",
+    "title": "Runtipi API",
+    "version": "1.0",
+  },
+  "openapi": "3.0.0",
+  "paths": {
+    "/user": {
+      "post": {
+        "operationId": "createUser",
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateUserBodyDto",
+              },
+            },
+          },
+          "required": true,
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreateUserBodyDto",
+                },
+              },
+            },
+            "description": "",
+          },
+        },
+        "tags": [
+          "App",
+        ],
+      },
+    },
+    "/user-in-out": {
+      "post": {
+        "operationId": "createUserInOut",
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateUserBodyDto",
+              },
+            },
+          },
+          "required": true,
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreateUserBodyDtoOut",
+                },
+              },
+            },
+            "description": "",
+          },
+        },
+        "tags": [
+          "App",
+        ],
+      },
+    },
+    "/user-out": {
+      "post": {
+        "operationId": "createUserOut",
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateUserBodyDtoOut",
+              },
+            },
+          },
+          "required": true,
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreateUserBodyDtoOut",
+                },
+              },
+            },
+            "description": "",
+          },
+        },
+        "tags": [
+          "App",
+        ],
+      },
+    },
+  },
+  "servers": [],
+  "tags": [],
+}
+`;

@@ -13,11 +13,13 @@
     "noImplicitOverride": true,
     "module": "Preserve",
     "noEmit": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
     "lib": [
       "es2022"
     ]
   },
   "exclude": [
     "example"
-  ],
+  ]
 }
