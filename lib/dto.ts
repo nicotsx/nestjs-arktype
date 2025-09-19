@@ -69,7 +69,11 @@ const applyApiProperties = (jsonSchema: JsonSchema, target: ArkDto) => {
 
     const Decorator = isRequired ? ApiProperty : ApiPropertyOptional;
 
-    Decorator({ type: 'string', ...value })(target.prototype, key);
+    if (value.type === 'object' && value.properties) {
+      Decorator({ selfRequired: isRequired, ...value })(target.prototype, key);
+    } else {
+      Decorator({ type: 'string', ...value })(target.prototype, key);
+    }
   }
 };
 
