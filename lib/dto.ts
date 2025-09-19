@@ -86,12 +86,6 @@ export function createArkDto<T extends Type>(schema: T, opts: Options) {
     public static output = schema.out;
     public static isArkDto = true;
 
-    constructor(schema: T) {
-      AugmentedArkDto.schema = schema;
-      AugmentedArkDto.input = schema.in;
-      AugmentedArkDto.output = schema.out;
-    }
-
     static parse(data: T['inferIn']): T['inferOut'] {
       const result = schema(data);
 
