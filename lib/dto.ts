@@ -110,10 +110,16 @@ export function createArkDto<T extends Type>(schema: T, opts: Options) {
   }
 
   Object.defineProperty(AugmentedArkDto, 'name', { value: name });
-  // @ts-ignore
-  const jsonSchema = input ? schema.in.toJsonSchema() : schema.out.toJsonSchema();
 
-  applyApiProperties(jsonSchema, AugmentedArkDto as unknown as ArkDto<T>);
+  const jsonSchema = input
+    ? schema.in.toJsonSchema({
+        fallback: { default: (ctx) => ctx.base },
+      })
+    : schema.out.toJsonSchema({
+        fallback: { default: (ctx) => ctx.base },
+      });
+
+  applyApiProperties(jsonSchema as JsonSchema, AugmentedArkDto as unknown as ArkDto<T>);
 
   return AugmentedArkDto as unknown as ArkDto<T>;
 }

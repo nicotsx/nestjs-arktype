@@ -1,6 +1,6 @@
 {
   "name": "nestjs-arktype",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "Define your NestJS DTOs and Swagger schemas using Arktype",
   "keywords": ["typescript", "nestjs", "swagger", "openapi", "dto", "schema", "validation"],
   "files": ["dist"],
@@ -31,7 +31,7 @@
   "peerDependencies": {
     "@nestjs/common": ">=11",
     "@nestjs/swagger": ">=11",
-    "arktype": ">=2"
+    "arktype": ">=2.1"
   },
   "repository": {
     "type": "git",
