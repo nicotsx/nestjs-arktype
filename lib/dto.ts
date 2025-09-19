@@ -1,6 +1,7 @@
 import { InternalServerErrorException } from '@nestjs/common';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { ArkErrors, type Type } from 'arktype';
+import { pruneEmptyAnyOfInPlace } from './utils/clean';
 
 type Options = {
   name: string;
@@ -52,6 +53,8 @@ export interface ArkDto<T extends Type<unknown> = Type<unknown>> {
 }
 
 const applyApiProperties = (jsonSchema: JsonSchema, target: ArkDto) => {
+  pruneEmptyAnyOfInPlace(jsonSchema);
+
   const { properties = {}, required = [] } = jsonSchema;
 
   for (let [key, value] of Object.entries(properties)) {
