@@ -80,6 +80,10 @@ const applyApiProperties = (jsonSchema: JsonSchema, target: ArkDto) => {
   }
 };
 
+type ParseOptions = {
+  reportOnly?: boolean;
+};
+
 export function createArkDto<T extends Type>(schema: T, opts: Options) {
   const { name, input = false } = opts;
 
@@ -89,20 +93,29 @@ export function createArkDto<T extends Type>(schema: T, opts: Options) {
     public static output = schema.out;
     public static isArkDto = true;
 
-    static parse(data: T['inferIn']): T['inferOut'] {
+    static parse(data: T['inferIn'], opts: ParseOptions = {}): T['inferOut'] {
       const result = schema(data);
 
       if (result instanceof ArkErrors) {
+        if (opts.reportOnly) {
+          console.error(result.summary);
+          return result as unknown as T['inferOut'];
+        }
+
         throw new InternalServerErrorException(result.summary);
       }
 
       return result;
     }
 
-    static parseUnknown(data: unknown): T['inferOut'] {
+    static parseUnknown(data: unknown, opts: ParseOptions = {}): T['inferOut'] {
       const result = schema(data);
 
       if (result instanceof ArkErrors) {
+        if (opts.reportOnly) {
+          console.error(result.summary);
+          return result as unknown as T['inferOut'];
+        }
         throw new InternalServerErrorException(result.summary);
       }
 
