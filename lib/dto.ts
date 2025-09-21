@@ -42,12 +42,16 @@ type JsonField =
       anyOf?: never;
     };
 
+type ParseOptions = {
+  reportOnly?: boolean;
+};
+
 export interface ArkDto<T extends Type<unknown> = Type<unknown>> {
   new (): T['inferOut'];
   isArkDto: true;
   schema: T;
-  parse(data: T['inferIn']): T['inferOut'];
-  parseUnknown(data: unknown): T['inferOut'];
+  parse(data: T['inferIn'], opts?: ParseOptions): T['inferOut'];
+  parseUnknown(data: unknown, opts?: ParseOptions): T['inferOut'];
   input: Type<T['inferIn']>;
   output: Type<T['inferOut']>;
 }
@@ -80,10 +84,6 @@ const applyApiProperties = (jsonSchema: JsonSchema, target: ArkDto) => {
   }
 };
 
-type ParseOptions = {
-  reportOnly?: boolean;
-};
-
 export function createArkDto<T extends Type>(schema: T, opts: Options) {
   const { name, input = false } = opts;
 
@@ -99,7 +99,7 @@ export function createArkDto<T extends Type>(schema: T, opts: Options) {
       if (result instanceof ArkErrors) {
         if (opts.reportOnly) {
           console.error(result.summary);
-          return result as unknown as T['inferOut'];
+          return data as unknown as T['inferOut'];
         }
 
         throw new InternalServerErrorException(result.summary);
@@ -114,7 +114,7 @@ export function createArkDto<T extends Type>(schema: T, opts: Options) {
       if (result instanceof ArkErrors) {
         if (opts.reportOnly) {
           console.error(result.summary);
-          return result as unknown as T['inferOut'];
+          return data as unknown as T['inferOut'];
         }
         throw new InternalServerErrorException(result.summary);
       }

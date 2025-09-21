@@ -6,7 +6,9 @@
 
 - Create your DTOs using ArkType and re-use them anywhere in your app
 - Auto validation of your input body / params / query with `ArkValidationPipe`
-- Generate a fully featured Openapi spec out of your DTOs
+- Generate a fully featured OpenAPI spec out of your DTOs with automatic Swagger decorators
+- Support for complex nested objects, arrays, and polymorphic types
+- Support for string literals and enumerations
 
 ## Examples
 
@@ -33,23 +35,29 @@ export class CreateUserBodyDto extends createArkDto(createUserBody, { name: 'Cre
 export class UserDto extends createArkDto(userDto, { name: 'UserDto' }) {}
 
 // user.controller.ts
-@Post('/user')
-@ApiBody({ type: CreateUserBodyDto })
-async createUser(@Body() body: CreateUserBodyDto): Promise<UserDto> {
-  const user = this.service.createUser(body);
-  return UserDto.parse(user); // Validate your output against the schema if you need to
+import { Body, Controller, Post } from '@nestjs/common';
+import { ApiBody } from '@nestjs/swagger';
+
+@Controller()
+export class UserController {
+  @Post('/user')
+  @ApiBody({ type: CreateUserBodyDto })
+  async createUser(@Body() body: CreateUserBodyDto): Promise<UserDto> {
+    const user = this.service.createUser(body);
+    return UserDto.parse(user); // Validate your output against the schema if you need to
+  }
 }
 ```
 
 ## Requirements
 
-- `arktype` >= `2`
+- `arktype` >= `2.1`
+- `@nestjs/common` >= `11`
 - `@nestjs/swagger` >= `11`
-- Node.js 22.x or later.
+- Node.js 22.x or later
 
-NestJS doesn't support importing ESM only libraries. ArkType 2 is now ESM only.
-Fortunately Node.js 22 lets you require() esm modules out of the box so this
-is a hard requirement.
+> **Important:** NestJS doesn't support importing ESM only libraries. ArkType 2 is now ESM only.
+> Fortunately Node.js 22 lets you `require()` ESM modules out of the box, so Node.js 22+ is a hard requirement.
 
 ## Installation
 
@@ -65,19 +73,31 @@ npm install nestjs-arktype arktype @nestjs/swagger
 export class MyDto extends createArkDto(schema, { name: 'MyDto', input: true })
 ```
 
-| Option | Type     | Description                |
+| Option | Type | Description |
 | :-------- | :------- | :------------------------- |
 | `schema` | `Type` | **Required**. Any ArkType schema representing your DTO |
-| `name` | `string` | **Required**. The name of your DTO |
-| `input` | `boolean` | Whether the DTO should represent the input or your schema or the output (useful for example when defining a body DTO) |
+| `name` | `string` | **Required**. The name of your DTO (used for OpenAPI generation) |
+| `input` | `boolean` | Whether the DTO should represent the input schema or output schema (useful for DTOs with defaults) |
+
+### DTO Methods
+
+Generated DTOs provide static methods for parsing:
+
+```typescript
+// Parse and validate data (throws on error)
+const validatedData = MyDto.parse(inputData);
+
+// Parse with error reporting only (logs errors instead of throwing)
+const result = MyDto.parse(inputData, { reportOnly: true });
+```
 
 ## Validating your inputs
 
 The validation pipe uses your ArkType schemas to parse and validate incoming data
-from your parameter decorators. When the data is not valid it throws a
-`BadRequestException` with a short summary of what went wrong.
+from your parameter decorators. When the data is not valid, it throws a
+`BadRequestException` with a detailed summary of what went wrong.
 
-To use it, in your main `app.module` add a new validation pipe.
+To use it, in your main `app.module` add the validation pipe:
 
 ```typescript
 import { Module } from '@nestjs/common';
