@@ -10,7 +10,7 @@ type Options = {
 
 type PrimitiveSwaggerType = 'string' | 'null' | 'number' | 'boolean' | 'integer';
 type JsonSchema = { type: 'object'; properties: Record<string, JsonField>; required: string[] };
-type JsonField =
+type JsonField = { description?: string } & (
   | {
       type: PrimitiveSwaggerType;
       anyOf?: never;
@@ -40,7 +40,8 @@ type JsonField =
       const: string;
       type?: never;
       anyOf?: never;
-    };
+    }
+);
 
 type ParseOptions = {
   reportOnly?: boolean;
@@ -71,7 +72,14 @@ const applyApiProperties = (jsonSchema: JsonSchema, target: ArkDto) => {
     const isRequired = required.includes(key);
 
     if (value.anyOf?.[0]?.const) {
-      value = { type: 'string', enum: value.anyOf.map((v) => v.const).filter((v) => v !== undefined) };
+      const enumField: JsonField = {
+        type: 'string',
+        enum: value.anyOf.map((v) => v.const).filter((v) => v !== undefined),
+      };
+      const nullable = value.anyOf.some((v) => v.type === 'null');
+      value = nullable
+        ? { anyOf: [enumField, { type: 'null' }], ...(value.description !== undefined && { description: value.description }) }
+        : enumField;
     }
 
     const Decorator = isRequired ? ApiProperty : ApiPropertyOptional;
