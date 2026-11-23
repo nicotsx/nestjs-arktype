@@ -34,4 +34,26 @@ describe('DTO', () => {
 
     expect(dto.schema).toEqual(createUserBody);
   });
+
+  it('should keep the null branch of an enum | null union', () => {
+    const body = type({ level: type.enumerated('high', 'low').or('null').describe('Level') });
+
+    class dto extends createArkDto(body, { name: 'NullableEnumDto' }) {}
+
+    expect(Reflect.getMetadata('swagger/apiModelProperties', dto.prototype, 'level')).toMatchObject({
+      anyOf: [{ type: 'string', enum: ['high', 'low'] }, { type: 'null' }],
+      description: 'Level',
+    });
+  });
+
+  it('should render an enum without null as a string enum', () => {
+    const body = type({ level: type.enumerated('high', 'low') });
+
+    class dto extends createArkDto(body, { name: 'EnumDto' }) {}
+
+    expect(Reflect.getMetadata('swagger/apiModelProperties', dto.prototype, 'level')).toMatchObject({
+      type: 'string',
+      enum: ['high', 'low'],
+    });
+  });
 });
